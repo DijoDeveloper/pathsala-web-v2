@@ -14,6 +14,7 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
+  GroupIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
@@ -29,7 +30,136 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    path: "/",
+    // subItems: [{ name: "Ecommerce", path: "/",  }],
+  },
+  {
+    icon: <GridIcon />,
+    name: "School Dashboard",
+    path: "/school-dashboard",
+  },
+  {
+    icon: <ListIcon />,
+    name: "School Registration",
+    path: "/calendar",
+  },
+  {
+    name: "Settings",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Organizer settings", path: "/form-elements" },
+      { name: "Dependency Program", path: "/form-elements" },
+      { name: "Default Holidays", path: "/form-elements" },
+      { name: "Subscriptions", path: "/form-elements" },
+      { name: "Role Management", path: "/form-elements" },
+      { name: "School Profile", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Registration",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Student", path: "/form-elements" },
+      { name: "Bulk Student", path: "/form-elements" },
+      { name: "Staff", path: "/form-elements" },
+      { name: "Bulk Staff", path: "/form-elements" },
+      { name: "App User", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Academics",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Schedule", path: "/form-elements" },
+      { name: "Exam Schedule", path: "/form-elements" },
+      { name: "Syllabus", path: "/form-elements" },
+      { name: "Events", path: "/form-elements" },
+      { name: "Event Calendar", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Holidays",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Class Holiday", path: "/form-elements" },
+      { name: "Student Holiday", path: "/form-elements" },
+      { name: "Holiday Calendar", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Communication",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Notice", path: "/form-elements" },
+      { name: "Chat", path: "/form-elements" },
+      { name: "Messaging", path: "/form-elements" },
+      { name: "Message History", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Attendance",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Take Attendance", path: "/form-elements" },
+      { name: "View Attendance", path: "/form-elements" },
+      { name: "Attendance Report", path: "/form-elements" },
+      { name: "Stats", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Homework",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Assign Homework", path: "/form-elements" },
+      { name: "Homework History", path: "/form-elements" },
+      { name: "Student wise homework", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Results",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Add Results", path: "/form-elements" },
+      { name: "Results", path: "/form-elements" },
+      { name: "Subject Results", path: "/form-elements" },
+      { name: "Bulk Upload Results", path: "/form-elements" },
+      { name: "View Results", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Reports",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Academic Report", path: "/form-elements" },
+      { name: "Fee Report", path: "/form-elements" },
+      { name: "Attendance Report", path: "/form-elements" },
+      { name: "Certificates", path: "/form-elements" },
+    ],
+  },
+  {
+    name: "Fee",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Fee Type", path: "/form-elements" },
+      { name: "Fee Structure", path: "/form-elements" },
+      { name: "Fee Plan", path: "/form-elements" },
+      { name: "Fee Payment", path: "/form-elements" },
+    ],
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Gallery",
+    path: "/calendar",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Library",
+    path: "/calendar",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Transport",
+    path: "/calendar",
   },
   {
     icon: <CalenderIcon />,
@@ -44,19 +174,19 @@ const navItems: NavItem[] = [
   {
     name: "Forms",
     icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    subItems: [{ name: "Form Elements", path: "/form-elements" }],
   },
   {
     name: "Tables",
     icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+    subItems: [{ name: "Basic Tables", path: "/basic-tables" }],
   },
   {
     name: "Pages",
     icon: <PageIcon />,
     subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false },
+      { name: "Blank Page", path: "/blank" },
+      { name: "404 Error", path: "/error-404" },
     ],
   },
 ];
@@ -66,28 +196,28 @@ const othersItems: NavItem[] = [
     icon: <PieChartIcon />,
     name: "Charts",
     subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
+      { name: "Line Chart", path: "/line-chart" },
+      { name: "Bar Chart", path: "/bar-chart" },
     ],
   },
   {
     icon: <BoxCubeIcon />,
     name: "UI Elements",
     subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
+      { name: "Alerts", path: "/alerts" },
+      { name: "Avatar", path: "/avatars" },
+      { name: "Badge", path: "/badge" },
+      { name: "Buttons", path: "/buttons" },
+      { name: "Images", path: "/images" },
+      { name: "Videos", path: "/videos" },
     ],
   },
   {
     icon: <PlugInIcon />,
     name: "Authentication",
     subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
+      { name: "Sign In", path: "/signin" },
+      { name: "Sign Up", path: "/signup" },
     ],
   },
 ];
@@ -368,7 +498,7 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
     </aside>
   );
