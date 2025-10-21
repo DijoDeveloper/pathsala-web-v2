@@ -21,6 +21,7 @@ import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import AppLayout from "./layout/AppLayout";
 import SchoolDashboard from "./pages/SchoolDashboard";
+import SchoolRegistration from "./pages/SchoolRegistration";
 
 const App: React.FC = () => {
   return (
@@ -35,7 +36,7 @@ const App: React.FC = () => {
             {/* APP STACK: The root path (/) is now protected */}
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<SchoolDashboard />} />
                 <Route path="/profile" element={<UserProfiles />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/blank" element={<Blank />} />
@@ -50,6 +51,7 @@ const App: React.FC = () => {
                 <Route path="/line-chart" element={<LineChart />} />
                 <Route path="/bar-chart" element={<BarChart />} />
                 <Route path="/school-dashboard" element={<SchoolDashboard />} />
+                <Route path="/school-registration" element={<SchoolRegistration />} />
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
               </Route>
             </Route>

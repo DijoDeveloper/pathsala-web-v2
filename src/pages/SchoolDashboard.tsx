@@ -5,6 +5,9 @@ import MonthlySalesChart from "../components/ecommerce/MonthlySalesChart";
 import MonthlyTarget from "../components/ecommerce/MonthlyTarget";
 import Button from "../components/ui/button/Button";
 import CardDetails from "../components/dashboard-components/CardDetails";
+import DonutPieChart from "../components/charts/pie/DonutPieChart";
+import DataTable, { Column } from "../components/common/DataTable";
+import SmsDetails from "../components/dashboard-components/SmsDetails";
 
 const birthdays = [
   { id: 1, name: "John Doe", section: "5A", wishes: 15, initials: "JD" },
@@ -16,6 +19,23 @@ const birthdays = [
     wishes: 23,
     initials: "RJ",
   },
+  {
+    id: 4,
+    name: "Alan Border",
+    section: "XB",
+    wishes: 21,
+    initials: "AB",
+  },
+];
+
+type ClassRow = { id: string; code: string; name: string; description: string };
+const demoClasses: ClassRow[] = [
+  { id: "1", code: "CODE001", name: "Resource Alpha (Class)", description: "Description for Alpha resource for this tab." },
+  { id: "2", code: "CODE002", name: "Resource Beta (Class)", description: "Description for Beta resource for this tab." },
+  { id: "3", code: "CODE003", name: "Resource Gamma (Class)", description: "Description for Gamma resource for this tab." },
+  { id: "4", code: "CODE004", name: "Resource Delta (Class)", description: "Description for Delta resource for this tab." },
+  { id: "5", code: "CODE005", name: "Resource Epsilon (Class)", description: "Description for Epsilon resource for this tab." },
+  { id: "6", code: "CODE006", name: "Resource Zeta (Class)", description: "Description for Zeta resource for this tab." },
 ];
 
 const holidays = [
@@ -31,6 +51,11 @@ const holidays = [
 ];
 
 export default function SchoolDashboard() {
+  const classColumns: Column<ClassRow>[] = [
+    { header: "Code", accessor: "code" },
+    { header: "Name", accessor: "name" },
+    { header: "Description", accessor: "description", className: "max-w-[360px] truncate" },
+  ];
   return (
     <>
       <PageMeta
@@ -89,21 +114,23 @@ export default function SchoolDashboard() {
         )}
 
         <div className="col-span-12 xl:col-span-8">
-          <div className="grid grid-cols-12 gap-4 md:gap-6">
+          <div className="grid grid-cols-12 gap-4 md:gap-6 items-stretch">
             {/* KPIs full width */}
             <div className="col-span-12">
               <CardDetails />
             </div>
 
             {/* Charts row */}
-            <div className="col-span-12 xl:col-span-7">
-              <ComponentCard title="SMS Sent (Last 7 Days)">
-                <MonthlySalesChart />
+            <div className="col-span-12 xl:col-span-6">
+              <ComponentCard title="SMS Sent (Last 7 Days)" className="h-full min-h-[460px]">
+                <SmsDetails />
               </ComponentCard>
             </div>
-            <div className="col-span-12 xl:col-span-5">
-              <ComponentCard title="Today's Attendance">
-                <MonthlyTarget />
+            <div className="col-span-12 xl:col-span-6">
+              <ComponentCard title="Today's Attendance" className="h-full min-h-[460px]">
+                {/* <MonthlyTarget /> */}
+                <DonutPieChart />
+
               </ComponentCard>
             </div>
 
@@ -170,6 +197,22 @@ export default function SchoolDashboard() {
                     </div>
                   ))}
                 </div>
+              </ComponentCard>
+            </div>
+
+            {/* Data table demo */}
+            <div className="col-span-12">
+              <ComponentCard title="Existing Classes">
+                <DataTable
+                  data={demoClasses}
+                  columns={classColumns}
+                  rowKey={(r) => r.id}
+                  initialPageSize={5}
+                  showActions
+                  onView={(row) => console.log("view", row)}
+                  onEdit={(row) => console.log("edit", row)}
+                  onDelete={(row) => console.log("delete", row)}
+                />
               </ComponentCard>
             </div>
           </div>

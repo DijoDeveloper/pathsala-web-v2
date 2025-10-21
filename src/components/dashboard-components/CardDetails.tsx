@@ -18,7 +18,7 @@ export default function CardDetails() {
         <div className="flex items-end justify-between mt-5">
           <div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Customers
+              Total Students
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
               3,780
@@ -40,10 +40,10 @@ export default function CardDetails() {
         <div className="flex items-end justify-between mt-5">
           <div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Orders
+              Staff Members
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              59
             </h4>
           </div>
 
@@ -61,17 +61,17 @@ export default function CardDetails() {
         <div className="flex items-end justify-between mt-5">
           <div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Orders
+              Active classes
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              42
             </h4>
           </div>
 
-          <Badge color="error">
+          {/* <Badge color="error">
             <ArrowDownIcon />
-            9.05%
-          </Badge>
+            5.05%
+          </Badge> */}
         </div>
       </div>
       {/* <!-- Metric Item End --> */}
