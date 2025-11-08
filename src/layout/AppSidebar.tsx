@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    path: "/",
+    path: "/school-dashboard",
     // subItems: [{ name: "Ecommerce", path: "/",  }],
   },
   {
@@ -42,10 +42,10 @@ const navItems: NavItem[] = [
     name: "Settings",
     icon: <ListIcon />,
     subItems: [
-      { name: "Organizer settings", path: "/form-elements" },
-      { name: "Dependency Program", path: "/form-elements" },
-      { name: "Default Holidays", path: "/form-elements" },
-      { name: "Subscriptions", path: "/form-elements" },
+      { name: "Organizer settings", path: "/settings/organizer" },
+      { name: "Dependency Program", path: "/settings/dependency-program" },
+      { name: "Default Holidays", path: "/settings/default-holidays" },
+      { name: "Subscriptions", path: "/settings/subscription" },
       { name: "Role Management", path: "/form-elements" },
       { name: "School Profile", path: "/form-elements" },
     ],
@@ -419,25 +419,15 @@ const AppSidebar: React.FC = () => {
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <>
-              <img
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-              <img
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-            </>
+            <img
+              src="/images/logo/pathshala_logo.png"
+              alt="Logo"
+              width={150}
+              height={40}
+            />
           ) : (
             <img
-              src="/images/logo/logo-icon.svg"
+              src="/images/logo/pathshala_logo.png"
               alt="Logo"
               width={32}
               height={32}

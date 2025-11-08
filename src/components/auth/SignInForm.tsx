@@ -23,11 +23,11 @@ export const SignInForm: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated) {
       console.log(
-        "User is already authenticated, redirecting to home.",
+        "User is already authenticated, redirecting to dashboard.",
         isAuthenticated
       );
-      // Immediately redirect to home, replacing the current /signin entry in history
-      navigate("/", { replace: true });
+      // Immediately redirect to dashboard, replacing the current /signin entry in history
+      navigate("/school-dashboard", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -48,15 +48,15 @@ export const SignInForm: React.FC = () => {
 
   return (
     <div className="flex flex-col flex-1">
-      {/* <div className="w-full max-w-md pt-10 mx-auto">
+      <div className="w-full max-w-md pt-10 mx-auto">
         <Link
           to="/"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
-          Back to dashboard
+          Back to home
         </Link>
-      </div> */}
+      </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">

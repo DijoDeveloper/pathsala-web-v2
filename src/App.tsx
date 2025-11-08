@@ -16,12 +16,16 @@ import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
 
-import Home from "./pages/Dashboard/Home";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import AppLayout from "./layout/AppLayout";
 import SchoolDashboard from "./pages/SchoolDashboard";
 import SchoolRegistration from "./pages/SchoolRegistration";
+import LandingGate from "./pages/LandingGate";
+import OrganizerSettings from "./pages/settings/OrganizerSettings";
+import DefaultHolidays from "./pages/settings/DefaultHolidays";
+import DependencyProgram from "./pages/settings/DependencyProgram";
+import Subscription from "./pages/settings/Subscription";
 
 const App: React.FC = () => {
   return (
@@ -29,6 +33,8 @@ const App: React.FC = () => {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            {/* PUBLIC MARKETING PAGE (with auth-aware redirect) */}
+            <Route path="/" element={<LandingGate />} />
             {/* AUTH STACK: Public Routes must have unique paths */}
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -36,7 +42,6 @@ const App: React.FC = () => {
             {/* APP STACK: The root path (/) is now protected */}
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
-                <Route path="/" element={<SchoolDashboard />} />
                 <Route path="/profile" element={<UserProfiles />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/blank" element={<Blank />} />
@@ -50,6 +55,10 @@ const App: React.FC = () => {
                 <Route path="/videos" element={<Videos />} />
                 <Route path="/line-chart" element={<LineChart />} />
                 <Route path="/bar-chart" element={<BarChart />} />
+                <Route path="/settings/organizer" element={<OrganizerSettings />} />
+                <Route path="/settings/default-holidays" element={<DefaultHolidays />} />
+                <Route path="/settings/dependency-program" element={<DependencyProgram />} />
+                <Route path="/settings/subscription" element={<Subscription />} />
                 <Route path="/school-dashboard" element={<SchoolDashboard />} />
                 <Route path="/school-registration" element={<SchoolRegistration />} />
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
