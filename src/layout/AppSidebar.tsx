@@ -46,8 +46,8 @@ const navItems: NavItem[] = [
       { name: "Dependency Program", path: "/settings/dependency-program" },
       { name: "Default Holidays", path: "/settings/default-holidays" },
       { name: "Subscriptions", path: "/settings/subscription" },
-      { name: "Role Management", path: "/form-elements" },
-      { name: "School Profile", path: "/form-elements" },
+      { name: "Role Management", path: "/settings/role-management" },
+      { name: "School Profile", path: "/settings/school-profile" },
     ],
   },
   {

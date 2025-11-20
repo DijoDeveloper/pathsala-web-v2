@@ -26,6 +26,8 @@ import OrganizerSettings from "./pages/settings/OrganizerSettings";
 import DefaultHolidays from "./pages/settings/DefaultHolidays";
 import DependencyProgram from "./pages/settings/DependencyProgram";
 import Subscription from "./pages/settings/Subscription";
+import RoleManagement from "./pages/settings/RoleManagement";
+import SchoolProfile from "./pages/settings/SchoolProfile";
 
 const App: React.FC = () => {
   return (
@@ -59,6 +61,8 @@ const App: React.FC = () => {
                 <Route path="/settings/default-holidays" element={<DefaultHolidays />} />
                 <Route path="/settings/dependency-program" element={<DependencyProgram />} />
                 <Route path="/settings/subscription" element={<Subscription />} />
+                <Route path="/settings/role-management" element={<RoleManagement />} />
+                <Route path="/settings/school-profile" element={<SchoolProfile />} />
                 <Route path="/school-dashboard" element={<SchoolDashboard />} />
                 <Route path="/school-registration" element={<SchoolRegistration />} />
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
