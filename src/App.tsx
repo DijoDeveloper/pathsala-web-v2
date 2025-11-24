@@ -21,6 +21,7 @@ import SignUp from "./pages/AuthPages/SignUp";
 import AppLayout from "./layout/AppLayout";
 import SchoolDashboard from "./pages/SchoolDashboard";
 import SchoolRegistration from "./pages/SchoolRegistration";
+import StudentRegistration from "./pages/registration/StudentRegistration";
 import LandingGate from "./pages/LandingGate";
 import OrganizerSettings from "./pages/settings/OrganizerSettings";
 import DefaultHolidays from "./pages/settings/DefaultHolidays";
@@ -65,6 +66,7 @@ const App: React.FC = () => {
                 <Route path="/settings/school-profile" element={<SchoolProfile />} />
                 <Route path="/school-dashboard" element={<SchoolDashboard />} />
                 <Route path="/school-registration" element={<SchoolRegistration />} />
+                <Route path="/registration/student" element={<StudentRegistration />} />
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
               </Route>
             </Route>

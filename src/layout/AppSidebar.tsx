@@ -54,7 +54,7 @@ const navItems: NavItem[] = [
     name: "Registration",
     icon: <ListIcon />,
     subItems: [
-      { name: "Student", path: "/form-elements" },
+      { name: "Student", path: "/registration/student" },
       { name: "Bulk Student", path: "/form-elements" },
       { name: "Staff", path: "/form-elements" },
       { name: "Bulk Staff", path: "/form-elements" },
