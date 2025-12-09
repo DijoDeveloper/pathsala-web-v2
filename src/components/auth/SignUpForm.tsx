@@ -1,13 +1,143 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useState, FormEvent } from "react";
+import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
+import { registerEmployee } from "../../services/apiService";
+import Alert from "../ui/alert/Alert";
+
+interface FormErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  terms?: string;
+}
+
+// Add this interface at the top of the file, after the imports
+interface AlertState {
+  show: boolean;
+  variant: 'success' | 'warning' | 'error';
+  title: string;
+  message: string;
+}
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState<AlertState | null>(null);
+
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+    let isValid = true;
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+      isValid = false;
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+      isValid = false;
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      isValid = false;
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+
+    if (!isChecked) {
+      newErrors.terms = 'You must accept the terms and conditions';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+    setIsSubmitting(true);
+    setAlert(null);
+    try {
+      const payload = {
+        username: formData.email, // Using email as username
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName
+      };
+
+      const response = await registerEmployee(payload);
+      if (response.success) {
+        // Show success alert
+        setAlert({
+          show: true,
+          variant: 'success',
+          title: 'Registration Successful!',
+          message: 'Your account has been created successfully. Redirecting to login...'
+        });
+
+        // Redirect after a short delay
+        setTimeout(() => {
+          navigate('/signin');
+        }, 2000);
+      } else {
+        throw new Error('Registration failed. Please try again.');
+      }
+
+    } catch (error: any) {
+      console.log('ererrere', error)
+      // Handle API errors
+      setAlert({
+        show: true,
+        variant: 'error',
+        title: 'Registration Failure!',
+        message: error.toString()
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
       <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
@@ -82,7 +212,20 @@ export default function SignUpForm() {
                 </span>
               </div>
             </div>
-            <form>
+            {/* Alert Messages */}
+            {alert?.show && (
+              <div className="w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-6">
+                  <Alert
+                    variant={alert.variant}
+                    title={alert.title}
+                    message={alert.message}
+                    showLink={false}
+                  />
+                </div>
+              </div>
+            )}
+            <form onSubmit={handleSubmit} noValidate>
               <div className="space-y-5">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* <!-- First Name --> */}
@@ -92,10 +235,16 @@ export default function SignUpForm() {
                     </Label>
                     <Input
                       type="text"
-                      id="fname"
-                      name="fname"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
                       placeholder="Enter your first name"
+                      className={errors.firstName ? 'border-error-500' : ''}
                     />
+                    {errors.firstName && (
+                      <p className="mt-1 text-sm text-error-500">{errors.firstName}</p>
+                    )}
                   </div>
                   {/* <!-- Last Name --> */}
                   <div className="sm:col-span-1">
@@ -104,10 +253,16 @@ export default function SignUpForm() {
                     </Label>
                     <Input
                       type="text"
-                      id="lname"
-                      name="lname"
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
                       placeholder="Enter your last name"
+                      className={errors.lastName ? 'border-error-500' : ''}
                     />
+                    {errors.lastName && (
+                      <p className="mt-1 text-sm text-error-500">{errors.lastName}</p>
+                    )}
                   </div>
                 </div>
                 {/* <!-- Email --> */}
@@ -119,8 +274,14 @@ export default function SignUpForm() {
                     type="email"
                     id="email"
                     name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     placeholder="Enter your email"
+                    className={errors.email ? 'border-error-500' : ''}
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-error-500">{errors.email}</p>
+                  )}
                 </div>
                 {/* <!-- Password --> */}
                 <div>
@@ -129,9 +290,16 @@ export default function SignUpForm() {
                   </Label>
                   <div className="relative">
                     <Input
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
                       placeholder="Enter your password"
                       type={showPassword ? "text" : "password"}
+                      className={errors.password ? 'border-error-500' : ''}
                     />
+                    {errors.password && (
+                      <p className="mt-1 text-sm text-error-500">{errors.password}</p>
+                    )}
                     <span
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
@@ -145,27 +313,49 @@ export default function SignUpForm() {
                   </div>
                 </div>
                 {/* <!-- Checkbox --> */}
-                <div className="flex items-center gap-3">
-                  <Checkbox
-                    className="w-5 h-5"
-                    checked={isChecked}
-                    onChange={setIsChecked}
-                  />
-                  <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
-                    By creating an account means you agree to the{" "}
-                    <span className="text-gray-800 dark:text-white/90">
-                      Terms and Conditions,
-                    </span>{" "}
-                    and our{" "}
-                    <span className="text-gray-800 dark:text-white">
-                      Privacy Policy
-                    </span>
-                  </p>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1">
+                    <Checkbox
+                      className="w-5 h-5"
+                      checked={isChecked}
+                      onChange={(checked) => {
+                        setIsChecked(checked);
+                        if (errors.terms) {
+                          setErrors(prev => ({
+                            ...prev,
+                            terms: undefined
+                          }));
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
+                      By creating an account means you agree to the{" "}
+                      <span className="text-gray-800 dark:text-white/90">
+                        Terms and Conditions,
+                      </span>{" "}
+                      and our{" "}
+                      <span className="text-gray-800 dark:text-white">
+                        Privacy Policy
+                      </span>
+                    </p>
+                    {errors.terms && (
+                      <p className="mt-1 text-sm text-error-500">{errors.terms}</p>
+                    )}
+                  </div>
                 </div>
                 {/* <!-- Button --> */}
                 <div>
-                  <button className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                    Sign Up
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg shadow-theme-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 ${isSubmitting
+                      ? 'bg-brand-400 cursor-not-allowed'
+                      : 'bg-brand-500 hover:bg-brand-600'
+                      }`}
+                  >
+                    {isSubmitting ? 'Signing Up...' : 'Sign Up'}
                   </button>
                 </div>
               </div>
