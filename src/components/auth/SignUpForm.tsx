@@ -6,6 +6,7 @@ import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import { registerEmployee } from "../../services/apiService";
 import Alert from "../ui/alert/Alert";
+import { AlertState } from "../../services/models/auth-model";
 
 interface FormErrors {
   firstName?: string;
@@ -13,14 +14,6 @@ interface FormErrors {
   email?: string;
   password?: string;
   terms?: string;
-}
-
-// Add this interface at the top of the file, after the imports
-interface AlertState {
-  show: boolean;
-  variant: 'success' | 'warning' | 'error';
-  title: string;
-  message: string;
 }
 
 export default function SignUpForm() {

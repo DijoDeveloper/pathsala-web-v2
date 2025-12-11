@@ -8,7 +8,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const FAKE_TOKEN_KEY = "my_auth_token";
+const FAKE_TOKEN_KEY = "authToken";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

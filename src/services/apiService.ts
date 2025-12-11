@@ -12,8 +12,9 @@ const SCHOOL_ID: string = '1';
 
 // Function to safely retrieve the authentication token
 const getAuthToken = (): string | null => {
+    const token = localStorage.getItem('authToken');
     // Retrieve token from storage (e.g., localStorage)
-    return localStorage.getItem('authToken');
+    return token;
 };
 
 // ====================================================================
@@ -82,6 +83,7 @@ const apiClient: AxiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'X-School-Id': SCHOOL_ID,
+
     },
 });
 

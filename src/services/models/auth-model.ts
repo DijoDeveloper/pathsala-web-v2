@@ -17,3 +17,11 @@ export interface IUserRecord {
     registrationDate: string; // Typically a string in ISO 8601 format
     emailVerifiedDate: string | null; // Can be a string or null
 }
+
+// Add this interface at the top of the file, after the imports
+export interface AlertState {
+    show: boolean;
+    variant: 'success' | 'warning' | 'error';
+    title: string;
+    message: string;
+}

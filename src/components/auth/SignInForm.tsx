@@ -6,13 +6,20 @@ import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 import { useAuth } from "../../hooks/authContext";
+import { loginUser } from "../../services/apiService";
 
 export const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
-  const navigate = useNavigate(); // Initialize useNavigate
-  const { signIn, isAuthenticated } = useAuth(); // Destructure isAuthenticated
+  const navigate = useNavigate();
+  const { signIn, isAuthenticated } = useAuth();
 
   // Define the expected shape of the state payload for type safety
   const locationState = location.state as {
@@ -22,28 +29,53 @@ export const SignInForm: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log(
-        "User is already authenticated, redirecting to dashboard.",
-        isAuthenticated
-      );
       // Immediately redirect to dashboard, replacing the current /signin entry in history
       navigate("/school-dashboard", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSignIn = (e: any) => {
-    console.log("Sign In clicked");
-    // Perform any validation or API calls here if needed
-    // navigate("/home", { replace: true }); // Replace the current history entry
-    // localStorage.setItem("authToken", "token");
-    // window.location.href = "/home"; // Force a full page reload
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
-    const fakeToken = "user-123-xyz";
-    signIn(fakeToken);
+    // Basic validation
+    if (!formData.username || !formData.password) {
+      setError('Please enter both username and password');
+      return;
+    }
 
-    // 🔑 Critical: After successful login, replace history entry
-    // navigate(from, { replace: true });
+    setIsLoading(true);
+
+    try {
+      const response = await loginUser({
+        username: formData.username,
+        password: formData.password
+      });
+
+
+      if (response.success && response.data) {
+        // Save token and user data
+        signIn(response.data.token);
+        // Redirect to dashboard or previous location
+        const from = locationState?.from?.pathname || "/school-dashboard";
+        navigate(from, { replace: true });
+      } else {
+        setError(response.error || 'Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      setError('An error occurred during login. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -82,9 +114,7 @@ export const SignInForm: React.FC = () => {
                     fill="#4285F4"
                   />
                   <path
-                    d="M10.1788 18.75C12.5895 18.75 14.6133 17.9722 16.0915 16.6305L13.274 14.4916C12.5201 15.0068 11.5081 15.3666 10.1788 15.3666C7.81773 15.3666 5.81379 13.8402 5.09944 11.7305L4.99473 11.7392L2.23868 13.8295L2.20264 13.9277C3.67087 16.786 6.68674 18.75 10.1788 18.75Z"
-                    fill="#34A853"
-                  />
+                    d="M10.1788 18.75C12.5895 18.75 14.6133 17.9722 16.0915 16.6305L13.274 14.4916C12.5201 15.0068 11.5081 15.3666 10.1788 15.3666C7.81773 15.3666 5.81379 13.8402 5.09944 11.7305L4.99473 11.7392L2.23868 13.8295L2.20264 13.9277C3.67087 16.786 6.68674 18.75 10.1788 18.75ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
                   <path
                     d="M5.10014 11.7305C4.91165 11.186 4.80257 10.6027 4.80257 9.99992C4.80257 9.3971 4.91165 8.81379 5.09022 8.26935L5.08523 8.1534L2.29464 6.02954L2.20333 6.0721C1.5982 7.25823 1.25098 8.5902 1.25098 9.99992C1.25098 11.4096 1.5982 12.7415 2.20333 13.9277L5.10014 11.7305Z"
                     fill="#FBBC05"
@@ -119,55 +149,80 @@ export const SignInForm: React.FC = () => {
                   Or
                 </span>
               </div>
-            </div> */}
-            <form>
-              <div className="space-y-6">
-                <div>
-                  <Label>
-                    Email <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <Input placeholder="info@gmail.com" />
+            </form> */}
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleSignIn(e);
+            }}>
+              {error && (
+                <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-900/50 dark:text-red-200">
+                  {error}
                 </div>
-                <div>
-                  <Label>
-                    Password <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Checkbox checked={isChecked} onChange={setIsChecked} />
-                    <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
-                      Keep me logged in
-                    </span>
-                  </div>
-                  <Link
-                    to="/reset-password"
-                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+              )}
+              <div className="mb-4">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  placeholder="Enter your username"
+                  className="w-full"
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="relative">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Enter your password"
+                    type={showPassword ? "text" : "password"}
+                    className="w-full"
+                    disabled={isLoading}
+                  />
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
                   >
-                    Forgot password?
-                  </Link>
+                    {showPassword ? (
+                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    ) : (
+                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    )}
+                  </span>
                 </div>
-                <div>
-                  <Button className="w-full" size="sm" onClick={handleSignIn}>
-                    Sign in
-                  </Button>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Checkbox checked={isChecked} onChange={setIsChecked} />
+                  <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
+                    Keep me logged in
+                  </span>
                 </div>
+                <Link
+                  to="/reset-password"
+                  className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="mt-5">
+                <Button
+                  variant="primary"
+                  className="w-full"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSignIn(e as unknown as React.FormEvent);
+                  }}
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Signing in...' : 'Sign In'}
+                </Button>
               </div>
             </form>
 
