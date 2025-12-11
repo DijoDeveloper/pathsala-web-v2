@@ -15,4 +15,13 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://52.66.101.122:8080',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
 });

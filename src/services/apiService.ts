@@ -7,7 +7,7 @@ import { IUserRecord } from './models/auth-model';
 // 1. Configuration and Base Setup
 // ====================================================================
 
-const BASE_URL: string = 'http://52.66.101.122:8080/api';
+const BASE_URL: string = '/api';
 const SCHOOL_ID: string = '1';
 
 // Function to safely retrieve the authentication token
