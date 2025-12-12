@@ -22,6 +22,7 @@ import AppLayout from "./layout/AppLayout";
 import SchoolDashboard from "./pages/SchoolDashboard";
 import SchoolRegistration from "./pages/SchoolRegistration";
 import StudentRegistration from "./pages/registration/StudentRegistration";
+import StaffRegistration from "./pages/registration/StaffRegistration";
 import LandingGate from "./pages/LandingGate";
 import OrganizerSettings from "./pages/settings/OrganizerSettings";
 import DefaultHolidays from "./pages/settings/DefaultHolidays";
@@ -58,15 +59,43 @@ const App: React.FC = () => {
                 <Route path="/videos" element={<Videos />} />
                 <Route path="/line-chart" element={<LineChart />} />
                 <Route path="/bar-chart" element={<BarChart />} />
-                <Route path="/settings/organizer" element={<OrganizerSettings />} />
-                <Route path="/settings/default-holidays" element={<DefaultHolidays />} />
-                <Route path="/settings/dependency-program" element={<DependencyProgram />} />
-                <Route path="/settings/subscription" element={<Subscription />} />
-                <Route path="/settings/role-management" element={<RoleManagement />} />
-                <Route path="/settings/school-profile" element={<SchoolProfile />} />
+                <Route
+                  path="/settings/organizer"
+                  element={<OrganizerSettings />}
+                />
+                <Route
+                  path="/settings/default-holidays"
+                  element={<DefaultHolidays />}
+                />
+                <Route
+                  path="/settings/dependency-program"
+                  element={<DependencyProgram />}
+                />
+                <Route
+                  path="/settings/subscription"
+                  element={<Subscription />}
+                />
+                <Route
+                  path="/settings/role-management"
+                  element={<RoleManagement />}
+                />
+                <Route
+                  path="/settings/school-profile"
+                  element={<SchoolProfile />}
+                />
                 <Route path="/school-dashboard" element={<SchoolDashboard />} />
-                <Route path="/school-registration" element={<SchoolRegistration />} />
-                <Route path="/registration/student" element={<StudentRegistration />} />
+                <Route
+                  path="/school-registration"
+                  element={<SchoolRegistration />}
+                />
+                <Route
+                  path="/registration/student"
+                  element={<StudentRegistration />}
+                />
+                <Route
+                  path="/registration/staff"
+                  element={<StaffRegistration />}
+                />
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
               </Route>
             </Route>
